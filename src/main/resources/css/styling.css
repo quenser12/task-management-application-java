@@ -39,3 +39,26 @@
 -fx-background-radius:1px 1px 1px 1px;
 -fx-text-fill: #FFFFFF;
 }
+.rounded-pane{
+ -fx-background-radius: 10;
+ -fx-background-color: #1b1b1b;
+}
+.rounded-label{
+    -fx-background-radius: 20;
+}
+.rounded-task-list{
+    -fx-background-radius: 10;
+}
+.details-button{
+    -fx-background-radius: 10;
+}
+.start-button{
+    -fx-background-radius: 5em;
+                    -fx-min-width: 40px;
+                    -fx-min-height: 40px;
+                    -fx-max-width: 40px;
+                    -fx-max-height: 40px;
+}
+.search-task{
+    -fx-background-radius: 20;
+}
