@@ -2,10 +2,9 @@ package com.example.taskmanagementapplicationjava;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,6 +28,7 @@ public class TaskController {
     @FXML
     private TextArea detailsTxtArea;
 
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @FXML
@@ -37,6 +37,7 @@ public class TaskController {
         tagsCBox.getItems().addAll("Tag1", "Tag2", "Tag3", "Tag4");
         statusCBox.getItems().addAll("In Progress", "Completed", "Pending");
         priorityCbox.getItems().addAll("High", "Medium", "Low");
+
     }
     @FXML
     public void createTask(ActionEvent event){
@@ -64,7 +65,10 @@ public class TaskController {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-
     }
+
+
+
+
+
 }
