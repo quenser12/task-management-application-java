@@ -6,8 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
@@ -27,6 +30,10 @@ public class DashboardController {
 
     @FXML
     private Pane taskContainer;
+    @FXML
+    private Pane inProgressContainer;
+    @FXML
+    private Pane completedContainer;
 
 
     @FXML
@@ -67,18 +74,27 @@ public class DashboardController {
         try{
             Connection con=DBConnection.getConnection();
             con.createStatement();
-            String sql = "SELECT * FROM TASKS";
+            String sql = "SELECT * FROM TASKS WHERE status  = 'In Progress'";
+            String sqlPendingStat = "SELECT * FROM TASKS WHERE status  = 'Pending'";
+            String sqlCompletedStat = "SELECT * FROM TASKS WHERE status  = 'Completed'";
             System.out.println(sql);
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            ResultSet resultSet = pstmt.executeQuery();
+            PreparedStatement pstmtInProgress = con.prepareStatement(sql);
+            PreparedStatement pstmtPending = con.prepareStatement(sqlPendingStat);
+            PreparedStatement pstmtCompleted = con.prepareStatement(sqlCompletedStat);
+
+            ResultSet resultSetPending = pstmtPending.executeQuery();
+            ResultSet resultSetInProgress = pstmtInProgress.executeQuery();
+            ResultSet resultSetCompleted = pstmtCompleted.executeQuery();
 
             // Clear existing panes from taskContainer
             taskContainer.getChildren().clear();
+            inProgressContainer.getChildren().clear();
+            completedContainer.getChildren().clear();
 
-            while(resultSet.next()){
-                String title = resultSet.getString("title");
-                String dueDate = resultSet.getString("due_date");
-                String tags = resultSet.getString("tags");
+            while(resultSetPending.next()){
+                String title = resultSetPending.getString("title");
+                String dueDate = resultSetPending.getString("due_date");
+                String tags = resultSetPending.getString("tags");
 //                String details = resultSet.getString("details");
 //                String priority = resultSet.getString("priority");
 //                String status = resultSet.getString("status");
@@ -89,6 +105,36 @@ public class DashboardController {
                 // Add the pane to the taskContainer
                 taskContainer.getChildren().add(pane);
             }
+
+            while(resultSetInProgress.next()){
+                String title = resultSetInProgress.getString("title");
+                String dueDate = resultSetInProgress.getString("due_date");
+                String tags = resultSetInProgress.getString("tags");
+//                String details = resultSet.getString("details");
+//                String priority = resultSet.getString("priority");
+//                String status = resultSet.getString("status");
+
+                //Create a pane for each row
+                Pane pane = createRowPane(title, tags, dueDate);
+
+                // Add the pane to the taskContainer
+                inProgressContainer.getChildren().add(pane);
+            }
+
+            while(resultSetCompleted.next()){
+                String title = resultSetCompleted.getString("title");
+                String dueDate = resultSetCompleted.getString("due_date");
+                String tags = resultSetCompleted.getString("tags");
+//                String details = resultSet.getString("details");
+//                String priority = resultSet.getString("priority");
+//                String status = resultSet.getString("status");
+
+                //Create a pane for each row
+                Pane pane = createRowPane(title, tags, dueDate);
+
+                // Add the pane to the taskContainer
+                completedContainer.getChildren().add(pane);
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -96,34 +142,47 @@ public class DashboardController {
 
     private Pane createRowPane(String title, String dueDate, String tags){
         Pane pane = new Pane();
-        // Apply styles to match the FXML styling
-        pane.setStyle("-fx-background-color: #F2F3F5; -fx-padding: 5px; -fx-pref-width: 247px; -fx-pref-height: 155px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-margin-top: 10px;");
+        pane.setStyle("-fx-background-color: #F2F3F5; -fx-padding: 5px; -fx-pref-width: 247px; -fx-min-height: 155px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-margin-bottom: 10px;");
 
-        // Create labels to display data
-        Label titleLabel = new Label( title);
+        Label titleLabel = new Label(title);
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/icons/purchase-tag-regular-24-black.png")));
         Label tagsLabel = new Label(tags);
         Label dueDateLabel = new Label(dueDate);
-
-        // Add labels to the pane
-//        pane.getChildren().addAll(titleLabel, tagsLabel,dueDateLabel);
-
-        // Set label styles
+        Button detailsButton = new Button("Details");
+        Button updateButton = new Button("Edit");
+        // Set styles for labels
         titleLabel.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
-        tagsLabel.setStyle("-fx-font-size: 14px;");
+        tagsLabel.setStyle("-fx-font-size: 12px;");
         dueDateLabel.setStyle("-fx-background-color: #E7E8E9; -fx-font-size: 12px; -fx-padding: 5px;");
 
-        // Add labels to the pane
-        pane.getChildren().addAll(titleLabel, tagsLabel, dueDateLabel);
+        // Set styles for buttons
+        detailsButton.setStyle("-fx-background-color: #E7E8E9;-fx-background-radius: 10;");
+        updateButton.setStyle("-fx-background-color: #2FD170;-fx-background-radius: 10;");
+//        startButton.setStyle("-fx-background-color: #0096FF; -fx-text-fill: white; -fx-font-size: 10.0;");
 
-        // Set the position of labels
+        // Add nodes to the pane
+        pane.getChildren().addAll(titleLabel, imageView, tagsLabel, dueDateLabel, detailsButton, updateButton);
+
+        // Set positions
         titleLabel.setLayoutX(14);
         titleLabel.setLayoutY(14);
 
-        tagsLabel.setLayoutX(42);
-        tagsLabel.setLayoutY(47);
+        imageView.setLayoutX(14);
+        imageView.setLayoutY(44);
 
-        dueDateLabel.setLayoutX(21);
-        dueDateLabel.setLayoutY(81);
+        tagsLabel.setLayoutX(21);
+        tagsLabel.setLayoutY(81);
+
+        dueDateLabel.setLayoutX(42);
+        dueDateLabel.setLayoutY(47);
+
+        detailsButton.setLayoutX(16);
+        detailsButton.setLayoutY(110);
+
+        updateButton.setLayoutX(100);
+        updateButton.setLayoutY(110);
+
+
         System.out.println("Pane Created");
         return pane;
     }

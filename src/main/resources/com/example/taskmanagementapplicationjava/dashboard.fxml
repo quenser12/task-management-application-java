@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskmanagementapplicationjava.TaskController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskmanagementapplicationjava.DashboardController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1200.0">
          <left>
@@ -117,22 +117,28 @@
                            <children>
                               <Pane prefHeight="63.0" prefWidth="926.0">
                                  <children>
-                                    <Label alignment="CENTER" layoutX="8.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #ED7954;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="Not Started" textFill="WHITE">
+                                    <Label alignment="CENTER" layoutX="74.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #ED7954;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="Pending" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="CENTER" layoutX="324.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #F2C157;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="In Progress" textFill="WHITE">
+                                    <Label alignment="CENTER" layoutX="396.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #F2C157;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="In Progress" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="CENTER" layoutX="547.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #2FD170;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="Completed" textFill="WHITE">
+                                    <Label alignment="CENTER" layoutX="717.0" layoutY="11.0" prefHeight="41.0" prefWidth="150.0" style="-fx-background-color: #2FD170;" styleClass="rounded-label" stylesheets="@../../../css/styling.css" text="Completed" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="189.0" layoutY="19.0" mnemonicParsing="false" onAction="#createTask" style="-fx-background-color: #FFFFFF;" text="Add" />
+
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="23.0" layoutY="17.0" onMouseClicked="#openDialog" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../icons/plus-square-solid-24.png" />
+                                       </image>
+                                    </ImageView>
+
                                  </children>
                               </Pane>
                            </children>
@@ -150,10 +156,9 @@
                            </image>
                         </ImageView>
                      </children></Pane>
-                  <VBox layoutX="26.0" layoutY="218.0" prefHeight="200.0" prefWidth="100.0" />
-                  <ScrollPane layoutX="14.0" layoutY="187.0" prefHeight="400.0" prefWidth="300.0">
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="14.0" layoutY="187.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #282828;">
                      <content>
-                        <VBox fx:id="taskContainer" prefHeight="395.0" prefWidth="300.0" style="-fx-background-color: #DBEAFF;">
+                        <VBox fx:id="taskContainer" prefHeight="395.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #DBEAFF;">
                            <children>
                               <Pane prefHeight="155.0" prefWidth="247.0" style="-fx-background-color: #F2F3F5;" styleClass="rounded-task-list" stylesheets="@../../../css/styling.css">
                                  <children>
@@ -170,11 +175,6 @@
                                     <Label fx:id="tagsLabel" layoutX="42.0" layoutY="47.0" text="Homework" />
                                     <Label fx:id="dueDateLabel" layoutX="21.0" layoutY="81.0" prefHeight="17.0" prefWidth="88.0" style="-fx-background-color: #E7E8E9;" text="16 Jun - 30 Jun" />
                                     <Button layoutX="16.0" layoutY="110.0" mnemonicParsing="false" style="-fx-background-color: #E7E8E9;" styleClass="details-button" stylesheets="@../../../css/styling.css" text="Details" />
-                                    <Button layoutX="193.0" layoutY="101.0" maxHeight="34.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="37.0" style="-fx-background-color: #0096FF;" styleClass="start-button" stylesheets="@../../../css/styling.css" text="Start" textFill="WHITE">
-                                       <font>
-                                          <Font size="10.0" />
-                                       </font>
-                                    </Button>
                                  </children>
                               </Pane>
                            </children>
@@ -184,8 +184,62 @@
                         </VBox>
                      </content>
                   </ScrollPane>
-                  <VBox layoutX="335.0" layoutY="189.0" prefHeight="395.0" prefWidth="300.0" style="-fx-background-color: #FFE3CD;" />
-                  <VBox layoutX="655.0" layoutY="189.0" prefHeight="395.0" prefWidth="300.0" style="-fx-background-color: #D9F2DC;" />
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="335.0" layoutY="187.0" prefHeight="400.0" prefWidth="300.0">
+                     <content>
+                        <VBox fx:id="inProgressContainer" prefHeight="395.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #FFE3CD;">
+                           <children>
+                              <Pane prefHeight="155.0" prefWidth="247.0" style="-fx-background-color: #F2F3F5;" styleClass="rounded-task-list" stylesheets="@../../../css/styling.css">
+                                 <children>
+                                    <Label fx:id="titleLabel1" layoutX="14.0" layoutY="14.0" text="Mobile App">
+                                       <font>
+                                          <Font name="System Bold" size="17.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="22.0" fitWidth="27.0" layoutX="14.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../icons/purchase-tag-regular-24-black.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="tagsLabel1" layoutX="42.0" layoutY="47.0" text="Homework" />
+                                    <Label fx:id="dueDateLabel1" layoutX="21.0" layoutY="81.0" prefHeight="17.0" prefWidth="88.0" style="-fx-background-color: #E7E8E9;" text="16 Jun - 30 Jun" />
+                                    <Button layoutX="16.0" layoutY="110.0" mnemonicParsing="false" style="-fx-background-color: #E7E8E9;" styleClass="details-button" stylesheets="@../../../css/styling.css" text="Details" />
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="655.0" layoutY="187.0" prefHeight="400.0" prefWidth="300.0">
+                     <content>
+                        <VBox fx:id="completedContainer" prefHeight="395.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #D9F2DC;">
+                           <children>
+                              <Pane prefHeight="155.0" prefWidth="247.0" style="-fx-background-color: #F2F3F5;" styleClass="rounded-task-list" stylesheets="@../../../css/styling.css">
+                                 <children>
+                                    <Label fx:id="titleLabel11" layoutX="14.0" layoutY="14.0" text="Mobile App">
+                                       <font>
+                                          <Font name="System Bold" size="17.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="22.0" fitWidth="27.0" layoutX="14.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../icons/purchase-tag-regular-24-black.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="tagsLabel11" layoutX="42.0" layoutY="47.0" text="Homework" />
+                                    <Label fx:id="dueDateLabel11" layoutX="21.0" layoutY="81.0" prefHeight="17.0" prefWidth="88.0" style="-fx-background-color: #E7E8E9;" text="16 Jun - 30 Jun" />
+                                    <Button layoutX="16.0" layoutY="110.0" mnemonicParsing="false" style="-fx-background-color: #E7E8E9;" styleClass="details-button" stylesheets="@../../../css/styling.css" text="Details" />
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
                </children>
             </Pane>
          </center>

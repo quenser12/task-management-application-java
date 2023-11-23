@@ -62,3 +62,9 @@
 .search-task{
     -fx-background-radius: 20;
 }
+#taskContainer, #inProgressContainer, #completedContainer{
+    -fx-background-radius: 20px;
+}
+.scroll-pane{
+    -fx-background-radius: 20px;
+}
